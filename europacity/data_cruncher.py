@@ -3,10 +3,10 @@
 
 import re
 import csv
-import urllib2
-import urlparse
-import matplotlib
-import datetime as dt
+# import urllib2
+# import urlparse
+# import matplotlib
+# import datetime as dt
 from collections import defaultdict
 from string import punctuation
 from nltk.corpus import stopwords
