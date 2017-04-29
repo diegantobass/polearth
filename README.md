@@ -4,4 +4,5 @@
 ### Presentations
 
 #### Civicact
-- [RCN Meeting slides](civicact/RCN_meeting/index.html)
+- [RCN Meeting slides](civicact/RCN_meeting/sampling_slides/index.html)
+- [Paris workshop slides](civicact/paris_workshop/asso_slides/index.html)
