@@ -134,15 +134,7 @@ Mahdi contacts with the [INERIS](http://www.ineris.fr/) (_Institut National de l
 
 -
 
-Spatial scale is <span class="highlight">_canton_</span> (from INSEE) : higher scale than the the _communes_
-
--
-
 <div style="text-align: center">![poumon_cancer](images/poumon_cancer.jpg)</div>
-
--
-
-Temporal scale is <span class="highlight">2000 to 2007</span>, recent years and a long enough period to have sufficient cumulated data on the four types of cancer analysed
 
 -
 
@@ -150,7 +142,11 @@ Temporal scale is <span class="highlight">2000 to 2007</span>, recent years and 
 
 -
 
-Data include cause of death, age, sex, _commune_ where the person lived
+- Spatial scale is <span class="highlight">_canton_</span> (from INSEE) : higher scale than the the _communes_
+
+- Temporal scale is <span class="highlight">2000 to 2007</span>, recent years and a long enough period to have sufficient cumulated data on the four types of cancer analysed
+
+- Data include cause of death, age, sex, _commune_ where the person lived
 
 ===
 
