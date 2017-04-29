@@ -1,4 +1,4 @@
-# DILA database of french _association loi 1901_
+# DILA database of french _associations loi 1901_
 
 ## Data
 
