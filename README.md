@@ -4,4 +4,4 @@
 ### Presentations
 
 #### Civicact
-- [RCN Meeting slides](civicact/RCN_maymeeting/index.html)
+- [RCN Meeting slides](civicact/RCN_meeting/index.html)
