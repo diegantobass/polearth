@@ -3,6 +3,8 @@
 
 -
 
+These slides are online at [diegantobass.github.io/polearth](https://diegantobass.github.io/polearth/civicact/RCN_meeting/sampling_slides/index.html)
+
 The huge survey on the presidential election that's taking all of our time at the Cevipof : <u>[www.enef.fr](http://www.enef.fr/)</u>
 
 ===
@@ -65,14 +67,14 @@ The huge survey on the presidential election that's taking all of our time at th
 
 -
 
-<div style="text-align: center">![plan](images/plan.png)</div>
+<div style="text-align: center;">![plan](images/plan.png)</div>
 
 -
 
-<div style="text-align: center">![plan](images/plan_zoom.png)</div>
+<div style="text-align: center; width: 80%;">![plan](images/plan_zoom.png)</div>
 
 -
-<div style="text-align:right"><img id="problem" src="images/problem.png" style="width: 70px;"/></div>
+<div style="text-align:right"><img id="problem" src="images/problem.png" style="width: 50px;"/></div>
 ## Problems?
 
 - Similar db for Strasbourg
