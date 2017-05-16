@@ -3,6 +3,7 @@
 
 import re
 import csv
+import sys
 # import urllib2
 # import urlparse
 # import matplotlib
@@ -12,12 +13,12 @@ from string import punctuation
 from nltk.corpus import stopwords
 
 # fichier input, stopwords et ponctuation
-europa_csv = csv.reader(open(sys.argv[1], 'r'))
-headers = europa_csv.next()
+input_csv = csv.reader(open(sys.argv[1], 'r'))
+headers = input_csv.next()
 punctuation = punctuation.replace('#', '').replace("'", '').replace('@', '')
 stops = stopwords.words('french') + [u'à', u'les', u'la', u'le', u'a', u'un', u'des']
 
-# variables : ce qu'on récupère
+# variables
 account_count = defaultdict(int)
 hashtags_count = defaultdict(int)
 keywords_count = defaultdict(int)
@@ -29,7 +30,7 @@ mentions_count = defaultdict(int)
 mentions_network = defaultdict(list)
 
 # outputs
-europa_out = csv.writer(open('europa_plus.csv', 'w'))
+output_csv = csv.writer(open('output_csv.csv', 'w'))
 account_out = csv.writer(open('accounts.csv', 'w'))
 hashtags_out = csv.writer(open('hashtags.csv', 'w'))
 keywords_out = csv.writer(open('keywords.csv', 'w'))
@@ -39,70 +40,72 @@ network_out = csv.writer(open('retweets.csv', 'w'))
 mentions_out = csv.writer(open('mentions.csv', 'w'))
 
 count_line = 0
-for line in europa_csv:
+for line in input_csv:
 	link, account, date, lang, geo, tweet = line
 	tweet_id = link.split('/')[-1]
 
-# texte du tweet sans ponctuation et sans urls et texte sous forme de liste de tokens
-	tweet_text = ' '.join([x for x in tweet.split() if not re.match(r'(https?://\S+)', x)])
-	tweet_text = ''.join([x for x in tweet_text if x not in punctuation]).replace('…', '')
-	tweet_tokens = tweet_text.split()
+	if "#europacity" in tweet.lower():
 
-# fréquence de tweet des comptes
-	account_count[account] += 1
-	
-# hashtags utilisés dans le tweet	
-	hashtags = [x for x in tweet_text.split() if x.startswith('#')]
-	for tag in hashtags:
-		hashtags_count[tag.lower()] += 1
+	# texte du tweet sans ponctuation et sans urls et texte sous forme de liste de tokens
+		tweet_text = ' '.join([x for x in tweet.split() if not re.match(r'(https?://\S+)', x)])
+		tweet_text = ''.join([x for x in tweet_text if x not in punctuation]).replace('…', '')
+		tweet_tokens = tweet_text.split()
 
-# mots-pleins contenus dans le tweet (pas les hashtags)
-	keywords = [x for x in tweet_text.split() if not x.startswith('#') and not x.startswith('@') and x not in stops]
-	for keyword in keywords:
-		keywords_count[keyword.lower()] += 1
+	# fréquence de tweet des comptes
+		account_count[account] += 1
+		
+	# hashtags utilisés dans le tweet	
+		hashtags = [x for x in tweet_text.split() if x.startswith('#')]
+		for tag in hashtags:
+			hashtags_count[tag.lower()] += 1
 
-# urls valides présentes dans le tweet
-	urls = re.findall(r'(https?://\S+)', tweet)
-	urls_resolved = urls
-	# urls_resolved = []
-	# domains = []
-	# for url in urls:
-	# 	try: 
-	# 		resolved = urllib2.urlopen(url).geturl()
-	# 		domain = urlparse.urlparse(resolved).netloc
-	# 		domains.append(domain)
-	# 		urls_resolved.append(resolved)
-	# 		domains_count[domain] += 1
-	# 	except:
-	# 		pass
+	# mots-pleins contenus dans le tweet (pas les hashtags)
+		keywords = [x for x in tweet_text.split() if not x.startswith('#') and not x.startswith('@') and x not in stops]
+		for keyword in keywords:
+			keywords_count[keyword.lower()] += 1
 
-# date du tweet
-	date = date.split('T')[0]
-	dates_count[date] += 1
+	# urls valides présentes dans le tweet
+		urls = re.findall(r'(https?://\S+)', tweet)
+		urls_resolved = urls
+		# urls_resolved = []
+		# domains = []
+		# for url in urls:
+		# 	try: 
+		# 		resolved = urllib2.urlopen(url).geturl()
+		# 		domain = urlparse.urlparse(resolved).netloc
+		# 		domains.append(domain)
+		# 		urls_resolved.append(resolved)
+		# 		domains_count[domain] += 1
+		# 	except:
+		# 		pass
 
-# reseau de retweets
-	retweet_from_account = ""
-	if tweet.startswith('RT'):
-		if len(tweet_tokens) > 1 and tweet_tokens[1].startswith('@'):
-			retweet_from_account = tweet_tokens[1][1:]
-			retweets_count[account] += 1
-			retweets_network[account].append(retweet_from_account)
+	# date du tweet
+		date = date.split('T')[0]
+		dates_count[date] += 1
 
-# réseau de mentions
-	mentions = []
-	for token in tweet_tokens:
-		if token.startswith('@'):
-			mentions.append(token[1:])
-			mentions_count[account] += 1
-			mentions_network[account].append(token[1:])
+	# reseau de retweets
+		retweet_from_account = ""
+		if tweet.startswith('RT'):
+			if len(tweet_tokens) > 1 and tweet_tokens[1].startswith('@'):
+				retweet_from_account = tweet_tokens[1][1:]
+				retweets_count[account] += 1
+				retweets_network[account].append(retweet_from_account)
 
-	# line_plus = line + [tweet_text, '|'.join(hashtags), '|'.join(keywords), '|'.join(domains), retweet_from_account, '|'.join(mentions)]
-	line_plus = line + [tweet_text, '|'.join(hashtags), '|'.join(keywords), retweet_from_account, '|'.join(mentions)]
-	europa_out.writerow(line_plus)
+	# réseau de mentions
+		mentions = []
+		for token in tweet_tokens:
+			if token.startswith('@'):
+				mentions.append(token[1:])
+				mentions_count[account] += 1
+				mentions_network[account].append(token[1:])
 
-# std_out infos 
-	count_line += 1
-	print count_line, "OK n°", tweet_id
+		# line_plus = line + [tweet_text, '|'.join(hashtags), '|'.join(keywords), '|'.join(domains), retweet_from_account, '|'.join(mentions)]
+		line_plus = line + [tweet_text, '|'.join(hashtags), '|'.join(keywords), retweet_from_account, '|'.join(mentions)]
+		output_csv.writerow(line_plus)
+
+	# std_out infos 
+		count_line += 1
+		print count_line, "OK n°", tweet_id
 
 ####
 
