@@ -67,7 +67,7 @@ The huge survey on the presidential election that's taking all of our time at th
 
 -
 
-<div style="text-align: center;">![plan](images/plan.png)</div>
+![plan](images/plan.png)
 
 -
 
