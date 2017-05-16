@@ -11,6 +11,7 @@ import sys
 from collections import defaultdict
 from string import punctuation
 from nltk.corpus import stopwords
+from dateutil.parser import parse
 
 # fichier input, stopwords et ponctuation
 input_csv = csv.reader(open(sys.argv[1], 'r'))
@@ -39,17 +40,27 @@ dates_out = csv.writer(open('dates.csv', 'w'))
 network_out = csv.writer(open('retweets.csv', 'w'))
 mentions_out = csv.writer(open('mentions.csv', 'w'))
 
+# dates évènements clés
+events = ['08/11/2016', '21/05/2017']
+events = sorted([parse(x, dayfirst=True) for x in events])
+
 count_line = 0
 for line in input_csv:
 	link, account, date, lang, geo, tweet = line
 	tweet_id = link.split('/')[-1]
 
-	if "#europacity" in tweet.lower():
-
 	# texte du tweet sans ponctuation et sans urls et texte sous forme de liste de tokens
-		tweet_text = ' '.join([x for x in tweet.split() if not re.match(r'(https?://\S+)', x)])
-		tweet_text = ''.join([x for x in tweet_text if x not in punctuation]).replace('…', '')
-		tweet_tokens = tweet_text.split()
+	tweet_text = ' '.join([x for x in tweet.split() if not re.match(r'(https?://\S+)', x)])
+	tweet_text = ''.join([x for x in tweet_text if x not in punctuation]).replace('…', '')
+	tweet_tokens = tweet_text.split()
+
+	# date du tweet
+	date = date.split('T')[0]
+	dates_count[date] += 1
+	date = parse(date, dayfirst=True)
+
+	# set the keyword filter and date intervals filter here
+	if "#europacity" in tweet_text.lower() and date < events[0]:
 
 	# fréquence de tweet des comptes
 		account_count[account] += 1
@@ -78,10 +89,6 @@ for line in input_csv:
 		# 		domains_count[domain] += 1
 		# 	except:
 		# 		pass
-
-	# date du tweet
-		date = date.split('T')[0]
-		dates_count[date] += 1
 
 	# reseau de retweets
 		retweet_from_account = ""
